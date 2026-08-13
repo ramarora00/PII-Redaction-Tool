@@ -46,4 +46,20 @@ In Milestone 2, we built the modular candidate PII detection foundation:
 - **Context-Aware Rules**: Differentiates Date of Birth (`DATE_OF_BIRTH`) from generic document dates (e.g. `Date of Allotment`) using keyword windows, and suppresses false positive phone/credit card candidates (e.g. `Order No`).
 - **Deferred Deconfliction**: Resolving overlaps, deduplication, and final replacement are explicitly deferred to subsequent milestones. Duplicate candidates from multiple sources are preserved.
 
+## Detection Fusion & Conflict Resolution
+
+In Milestone 3, we implemented the detection fusion and conflict resolution layer:
+
+- **Type Normalization**: Maps detector-specific types to standard canonical types (e.g. `PERSON_CANDIDATE` -> `PERSON`).
+- **Duplicate Merging with Provenance**: Candidates covering the exact same span and compatible types are merged. The highest confidence is retained, and original detector signatures (detector name, original score, and original label) are saved under `metadata["sources"]`.
+- **Hierarchical Conflict Policy**: Overlapping and nested spans are resolved deterministically:
+  1. *Contextual Override*: Specific context-based types (like `DATE_OF_BIRTH`) override generic ones (like `DATE`).
+  2. *Nesting Check*:
+     - If types are compatible, the larger span wins to preserve complete entities (e.g. `"Mr. John Smith"` over `"John"`).
+     - If types are incompatible, the semantically stronger type wins even if nested (e.g., `"john@example.com"` `EMAIL` overrides nested `"john"` `PERSON`).
+  3. *Type Strength*: High-strength validated structured types (`EMAIL`, `SSN`, `CREDIT_CARD`, `IP_ADDRESS`) override weaker contextual boundaries if they overlap.
+  4. *Confidence & Length*: Fallbacks resolve in favor of higher confidence, then longer span length, then deterministic index positions.
+- **Safety Invariants**: The fusion layer asserts `0 <= start < end <= len(text)` and verifies that `text[start:end] == entity.text` matching string values.
+
+
 

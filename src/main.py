@@ -40,10 +40,19 @@ def main() -> None:
 
     try:
         validate_arguments(args.input, args.output)
-        print(f"Validation successful.")
-        print(f"Input: {args.input}")
-        print(f"Output: {args.output}")
-        # PII detection & redaction logic to be added in future milestones.
+        print(f"Validation successful. Starting redaction pipeline...")
+        print(f"Input file: {args.input}")
+        print(f"Output file: {args.output}")
+        
+        from src.anonymization.generator import SyntheticGenerator
+        from src.anonymization.entity_store import EntityStore
+        from src.reconstruction.document_writer import redact_document
+        
+        generator = SyntheticGenerator(locale="en_IN")
+        store = EntityStore(generator)
+        
+        redact_document(args.input, args.output, store)
+        print("Document redaction completed successfully.")
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         sys.exit(1)

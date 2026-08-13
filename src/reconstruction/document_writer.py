@@ -29,12 +29,16 @@ class RedactionEngine:
         )
         return resolve_candidates(text, cands)
 
-def redact_document(input_path: str, output_path: str, store: EntityStore) -> None:
+def redact_document(input_path: str, output_path: str, store: EntityStore) -> list:
     """
     Two-pass DOCX redaction pipeline:
       - Pass 1: Analyzes all text blocks, registers PII candidates globally in EntityStore.
       - Pass 2: Resolves candidates, maps spans, and applies replacements right-to-left.
     Saves atomically using a temp file first.
+    
+    Returns a redaction manifest: list of dicts with keys
+      {paragraph_desc, entity_type, original_text, replacement_text}
+    for every entity actually written into the output.
     """
     if not os.path.exists(input_path):
         raise FileNotFoundError(f"Input file not found at: {input_path}")
@@ -70,9 +74,15 @@ def redact_document(input_path: str, output_path: str, store: EntityStore) -> No
     # ==========================================================================
     # PASS 1: Candidate Detection & Entity Registration
     # ==========================================================================
-    all_resolved_pii: List[Tuple[Any, list, list]] = []  # tuple of (paragraph_object, runs, resolved_entities)
+    all_resolved_pii: List[Tuple[Any, list, list, str]] = []  # (paragraph, runs, entities, desc)
+    seen_paragraphs = set()
     
     for paragraph, desc in text_blocks:
+        p_key = paragraph._p
+        if p_key in seen_paragraphs:
+            continue
+        seen_paragraphs.add(p_key)
+        
         runs = get_paragraph_runs(paragraph)
         if not runs:
             continue
@@ -95,22 +105,107 @@ def redact_document(input_path: str, output_path: str, store: EntityStore) -> No
         if keep_pii:
             # Register in EntityStore
             store.register_candidates(keep_pii)
-            all_resolved_pii.append((paragraph, runs, keep_pii))
+            all_resolved_pii.append((paragraph, runs, keep_pii, desc))
 
     # Generate synthetic replacements for registered entities
     store.generate_all_replacements()
 
+    # Compile propagation list
+    import re
+    from src.detection.models import PIIEntity
+    propagation_entities = []
+    
+    corporate_suffixes = {"limited", "ltd", "ltd.", "private", "pvt", "llp", "corporation", "inc", "inc.", "plc", "llc", "group"}
+    
+    for canonical_id, orig_text in store.id_to_original.items():
+        entity_type = canonical_id.split("_")[0]
+        words = orig_text.split()
+        num_words = len(words)
+        
+        should_propagate = False
+        
+        if entity_type == "PERSON":
+            if num_words >= 2:
+                should_propagate = True
+        elif entity_type == "COMPANY":
+            has_suffix = any(w.lower() in corporate_suffixes for w in words)
+            if num_words >= 2 or has_suffix:
+                should_propagate = True
+        elif entity_type in {"EMAIL", "PHONE", "CREDIT_CARD", "SSN", "IP_ADDRESS"}:
+            should_propagate = True
+            
+        if should_propagate:
+            # Use word boundaries if it's alphanumeric at the edges.
+            esc_text = re.escape(orig_text)
+            pattern_str = esc_text
+            if orig_text[0].isalnum():
+                pattern_str = r"\b" + pattern_str
+            if orig_text[-1].isalnum():
+                pattern_str = pattern_str + r"\b"
+                
+            propagation_entities.append({
+                "type": entity_type,
+                "text": orig_text,
+                "pattern": re.compile(pattern_str, re.IGNORECASE)
+            })
+
     # ==========================================================================
     # PASS 2: Span Mapping & Replacement Application
     # ==========================================================================
-    for paragraph, runs, resolved in all_resolved_pii:
+    redaction_manifest = []
+    local_entities_map = {p_obj._p: ents for p_obj, r, ents, d in all_resolved_pii}
+    
+    seen_paragraphs_pass2 = set()
+    for paragraph, desc in text_blocks:
+        p_key = paragraph._p
+        if p_key in seen_paragraphs_pass2:
+            continue
+        seen_paragraphs_pass2.add(p_key)
+        
+        runs = get_paragraph_runs(paragraph)
+        if not runs:
+            continue
         text, offsets = reconstruct_paragraph_text(runs)
+        if not text.strip():
+            continue
+            
+        local_entities = local_entities_map.get(p_key, [])
+        propagated_cands = []
+        
+        for prop in propagation_entities:
+            for match in prop["pattern"].finditer(text):
+                ent = PIIEntity(
+                    entity_type=prop["type"],
+                    text=match.group(),
+                    start=match.start(),
+                    end=match.end(),
+                    confidence=1.0,
+                    source="propagation"
+                )
+                propagated_cands.append(ent)
+                
+        if not local_entities and not propagated_cands:
+            continue
+            
+        combined_cands = local_entities + propagated_cands
+        from src.detection.fusion import resolve_candidates
+        final_resolved = resolve_candidates(text, combined_cands)
+        
         mapped_spans: List[MappedPIISpan] = []
         
-        for entity in resolved:
+        for entity in final_resolved:
             # Map logical char offsets to runs
             run_spans = map_span_to_runs(entity.start, entity.end, entity, offsets, runs)
             mapped_spans.append(MappedPIISpan(entity, run_spans))
+            
+            # Record in manifest
+            replacement = store.get_replacement(entity.entity_type, entity.text)
+            redaction_manifest.append({
+                "paragraph_desc": desc,
+                "entity_type": entity.entity_type,
+                "original_text": entity.text,
+                "replacement_text": replacement,
+            })
             
         # Apply replacement
         apply_replacements(paragraph, mapped_spans, runs, store)
@@ -134,3 +229,6 @@ def redact_document(input_path: str, output_path: str, store: EntityStore) -> No
         if os.path.exists(temp_file_path):
             os.remove(temp_file_path)
         raise RuntimeError(f"Failed to safely reconstruct/save redacted document: {e}")
+    
+    return redaction_manifest
+

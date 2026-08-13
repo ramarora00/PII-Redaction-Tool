@@ -65,9 +65,12 @@ def map_span_to_runs(
                 text_in_run=text_in_run
             ))
 
-    # Safety Invariant Check: Combined matched text must equal the original PII entity text exactly
+    # Safety Invariant Check: Combined matched text must equal the original PII entity text exactly (modulo normalized whitespace/dashes)
+    def normalize_for_check(t: str) -> str:
+        return t.replace("\u2013", " ").replace("\u2014", " ").replace("\ufffd", " ").replace("\t", " ").replace("\xa0", " ")
+
     combined_matched_text = "".join(r.text_in_run for r in run_spans)
-    if combined_matched_text != entity.text:
+    if normalize_for_check(combined_matched_text) != normalize_for_check(entity.text):
         raise ValueError(
             f"Safety Invariant Failed: reconstructed text '{combined_matched_text}' "
             f"does not match PII Entity text '{entity.text}' exactly."

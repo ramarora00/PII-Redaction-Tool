@@ -13,7 +13,12 @@ class CandidateValidator:
             "european union", "eur", "euro", "indian standard time", "united states of america",
             "united states", "united states dollars", "promoter group", "promoter selling shareholders",
             "promoter selling shareholder", "reliance", "company", "net proceeds", "email",
-            "the promoter selling", "basis of allotment"
+            "the promoter selling", "basis of allotment",
+            # M15A False Positives:
+            "selling", "fiscal", "fiscals", "pursuant", "floor", "bid", "a bid", "bid amount",
+            "the bid amount", "mutual funds", "qib bidders", "bidders", "key managerial personnel", 
+            "key managerial", "personnel", "underwriters", "syndicate", "allotment", "bank", "bankers", "upi",
+            "neft", "rtgs"
         }
         
         # Personal titles/indicators
@@ -89,21 +94,29 @@ class CandidateValidator:
         """
         Filters out common document keywords matching PERSON or COMPANY unless preceded by personal context.
         """
-        if cand.entity_type not in ("PERSON", "COMPANY", "LOCATION"):
+        if cand.entity_type not in ("PERSON", "COMPANY", "LOCATION", "PERSON_CANDIDATE", "COMPANY_CANDIDATE", "LOCATION_CANDIDATE"):
             return
 
         cand_clean = cand.text.strip().lower()
-        # Check if the text matches a generic document term or is nested inside one
-        is_generic = any(term == cand_clean or term in cand_clean for term in self.generic_terms)
+        
+        # Fast exact match or word-boundary substring match
+        is_generic = False
+        if cand_clean in self.generic_terms:
+            is_generic = True
+        else:
+            for term in self.generic_terms:
+                if re.search(r"\b" + re.escape(term) + r"\b", cand_clean):
+                    is_generic = True
+                    break
         
         if is_generic:
-            # Check context prefix (up to 30 characters before)
-            start_window = max(0, cand.start - 30)
-            prefix_window = text[start_window:cand.start].lower()
-            prefix_tokens = set(re.findall(r"\b\w+\b", prefix_window))
+            # Check context prefix (up to 5 words before)
+            prefix_window = text[:cand.start].lower()
+            prefix_tokens = re.findall(r"\b\w+\b", prefix_window)
+            last_5_tokens = set(prefix_tokens[-5:]) if prefix_tokens else set()
             
             # If personal context exists, KEEP. Otherwise, REJECT.
-            has_personal_context = any(ind in prefix_tokens for ind in self.personal_indicators)
+            has_personal_context = any(ind in last_5_tokens for ind in self.personal_indicators)
             
             if not has_personal_context:
                 cand.metadata["validation_decision"] = "REJECT"

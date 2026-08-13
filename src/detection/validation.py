@@ -9,7 +9,11 @@ class CandidateValidator:
             "offer", "prospectus", "board", "table", "anchor investors",
             "issue", "promoters", "red herring prospectus", "inr", "indian rupees",
             "rupees", "the republic of india", "republic of india", "general terms and abbreviations",
-            "key financial", "currency"
+            "key financial", "currency", "usd", "u.s", "u.s.", "sweden", "sek", "krona",
+            "european union", "eur", "euro", "indian standard time", "united states of america",
+            "united states", "united states dollars", "promoter group", "promoter selling shareholders",
+            "promoter selling shareholder", "reliance", "company", "net proceeds", "email",
+            "the promoter selling", "basis of allotment"
         }
         
         # Personal titles/indicators
@@ -60,6 +64,9 @@ class CandidateValidator:
             cand_clean = cand.text.strip().lower()
             if cand_clean in self.indian_gpes:
                 cand.entity_type = "LOCATION"
+
+            # Trim trailing corporate suffixes from PERSON candidate names
+            self._trim_person_suffixes(cand)
 
             # Apply validation filters sequentially
             self._validate_generic_terms(text, cand)
@@ -194,3 +201,28 @@ class CandidateValidator:
             if not has_personal_title:
                 cand.metadata["validation_decision"] = "REJECT"
                 cand.metadata["validation_reason"] = "GENERIC_DOCUMENT_TERM"
+
+    def _trim_person_suffixes(self, cand: PIIEntity) -> None:
+        """
+        Trims trailing corporate suffixes or role labels from PERSON candidate spans.
+        (e.g., 'Sarthak Malvadkar Company' -> 'Sarthak Malvadkar')
+        """
+        if cand.entity_type != "PERSON":
+            return
+
+        suffixes_to_trim = {"company", "secretary", "officer", "director", "group", "shareholders", "shareholder"}
+        
+        while True:
+            cand_text = cand.text.strip()
+            tokens = cand_text.split()
+            if not tokens:
+                break
+            
+            last_token = tokens[-1].strip(".,:;()").lower()
+            if last_token in suffixes_to_trim:
+                trimmed_text = " ".join(tokens[:-1]).strip()
+                if trimmed_text:
+                    cand.end = cand.start + len(trimmed_text)
+                    cand.text = trimmed_text
+                    continue
+            break

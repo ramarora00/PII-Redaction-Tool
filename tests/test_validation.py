@@ -109,3 +109,29 @@ def test_validation_near_misses_and_suppressions():
     res16 = validator.validate_candidates(text16, [cand16])
     assert res16[0].metadata["validation_decision"] == "REJECT"
 
+    # 17. Sarthak Malvadkar Company (PERSON suffix trim) -> Trim to Sarthak Malvadkar
+    text17 = "Contact: Sarthak Malvadkar Company Secretary"
+    cand17 = PIIEntity("PERSON", "Sarthak Malvadkar Company", 9, 34, 0.90, "spacy")
+    res17 = validator.validate_candidates(text17, [cand17])
+    assert res17[0].text == "Sarthak Malvadkar"
+    assert res17[0].end == 26
+    assert res17[0].metadata["validation_decision"] == "KEEP"
+
+    # 18. Sweden location boilerplate -> REJECT
+    text18 = "based in Sweden."
+    cand18 = PIIEntity("LOCATION", "Sweden", 9, 15, 0.80, "spacy")
+    res18 = validator.validate_candidates(text18, [cand18])
+    assert res18[0].metadata["validation_decision"] == "REJECT"
+
+    # 19. USD currency boilerplate -> REJECT
+    text19 = "denominated in USD."
+    cand19 = PIIEntity("LOCATION", "USD", 15, 18, 0.80, "presidio")
+    res19 = validator.validate_candidates(text19, [cand19])
+    assert res19[0].metadata["validation_decision"] == "REJECT"
+
+    # 20. Mr. Reliance -> KEEP (has personal title prefix)
+    text20 = "Please call Mr. Reliance."
+    cand20 = PIIEntity("COMPANY", "Reliance", 16, 24, 0.85, "spacy")
+    res20 = validator.validate_candidates(text20, [cand20])
+    assert res20[0].metadata["validation_decision"] == "KEEP"
+

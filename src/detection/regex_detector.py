@@ -43,7 +43,7 @@ class RegexDetector(BaseDetector):
 
         # Registry / corporate entities pattern to capture full spans (resolves punctuation/comma splits)
         self.registry_pattern = re.compile(
-            r"\b(?:Registrar of Companies\s*Maharashtra|Registrar of Companies(?:,\s*Maharashtra)?|RoC|ROC)\b",
+            r"\b(?:Registrar of Companies\s*Central Processing Centre|Registrar of Companies(?:,\s*Central Processing Centre)|Registrar of Companies\s*Maharashtra|Registrar of Companies(?:,\s*Maharashtra)?|RoC|ROC)\b",
             re.IGNORECASE
         )
 

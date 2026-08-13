@@ -102,7 +102,7 @@ F1 combines precision and recall into a single measure.
 
 ### Accuracy
 
-The assignment requests an explicit accuracy metric. Because conventional span-level accuracy is mathematically meaningless (as it lacks a defined true-negative population), Accuracy is calculated via explicit **Token-Level Binary Classification** over all evaluated benchmark blocks.
+The assignment requests an explicit accuracy metric. Because conventional span-level accuracy is not well-defined for this span-based evaluation, Accuracy is calculated via explicit **Token-Level Binary Classification** over all evaluated benchmark blocks.
 
 For every token in the benchmark text (using whitespace tokenization), the token is classified as either PII or NON-PII for both the ground truth and the prediction. Overlapping ground-truth annotations are deduplicated prior to labeling.
 
@@ -118,7 +118,7 @@ Accuracy = `(TP + TN) / (TP + TN + FP + FN)`
 
 ## 5. Overall Results
 
-The implementation supports all 9 Enterprise-required PII categories, plus `LOCATION`. The supplied benchmark currently contains annotations for COMPANY, LOCATION, PERSON, EMAIL, PHONE, and ADDRESS. However, SSN, CREDIT_CARD, DATE_OF_BIRTH, and IP_ADDRESS are explicitly absent from the supplied prospectus document. Consequently, the reported benchmark metrics measure the verified categories only, without fabricating results for absent types.
+The implementation supports all 9 Enterprise-required PII categories. The supplied prospectus benchmark contains annotations for COMPANY, LOCATION, PERSON, EMAIL, PHONE, and ADDRESS. SSN, CREDIT_CARD, DATE_OF_BIRTH, and IP_ADDRESS do not occur in the supplied prospectus, so no category-level benchmark scores are reported for those types.
 
 ### Token-Level Binary Classification
 

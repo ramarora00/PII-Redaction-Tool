@@ -39,7 +39,7 @@ The main tradeoff is precision versus recall. Contextual NER can occasionally cl
 
 ## Evaluation
 
-The implementation supports all 9 Enterprise-required PII categories, plus `LOCATION`. The supplied human-annotated benchmark contains verified annotations for `COMPANY`, `LOCATION`, `PERSON`, `EMAIL`, `PHONE`, and `ADDRESS`. However, `SSN`, `CREDIT_CARD`, `DATE_OF_BIRTH`, and `IP_ADDRESS` are explicitly absent from the supplied prospectus document. Therefore, the benchmark metrics directly measure the verified categories only, without fabricating results for absent types.
+The implementation supports all 9 Enterprise-required PII categories. The supplied prospectus benchmark contains annotations for COMPANY, LOCATION, PERSON, EMAIL, PHONE, and ADDRESS. SSN, CREDIT_CARD, DATE_OF_BIRTH, and IP_ADDRESS do not occur in the supplied prospectus, so no category-level benchmark scores are reported for those types.
 
 On the human-annotated benchmark:
 

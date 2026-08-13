@@ -207,3 +207,17 @@ def test_duplicate_candidate_preservation():
     sources = [e.source for e in emails]
     assert "regex" in sources
     assert "presidio" in sources
+
+def test_regex_registries():
+    detector = RegexDetector()
+    text = "decided by Registrar of Companies, Maharashtra at Mumbai or Registrar of Companies Maharashtra or ROC or RoC."
+    results = detector.detect(text)
+    
+    companies = [c for c in results if c.entity_type == "COMPANY_CANDIDATE"]
+    texts = [c.text for c in companies]
+    assert "Registrar of Companies, Maharashtra" in texts
+    assert "Registrar of Companies Maharashtra" in texts
+    assert "ROC" in texts
+    assert "RoC" in texts
+    for c in companies:
+        assert text[c.start:c.end] == c.text

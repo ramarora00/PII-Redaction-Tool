@@ -7,7 +7,9 @@ class CandidateValidator:
         # Generic document terminology (lowercase for matching)
         self.generic_terms = {
             "offer", "prospectus", "board", "table", "anchor investors",
-            "issue", "promoters", "red herring prospectus"
+            "issue", "promoters", "red herring prospectus", "inr", "indian rupees",
+            "rupees", "the republic of india", "republic of india", "general terms and abbreviations",
+            "key financial", "currency"
         }
         
         # Personal titles/indicators
@@ -33,6 +35,12 @@ class CandidateValidator:
             "board", "company", "registrar", "regulations", "act", "depositories act"
         }
 
+        # Indian GPE terms to override type to LOCATION
+        self.indian_gpes = {
+            "pune", "mumbai", "bombay", "maharashtra", "delhi", "india",
+            "chakan", "khed", "birdewadi"
+        }
+
     def validate_candidates(self, text: str, candidates: List[PIIEntity]) -> List[PIIEntity]:
         """
         Coordinates the execution of specialized validation rules over deconflicted entities.
@@ -48,6 +56,11 @@ class CandidateValidator:
             if "validation_reason" not in cand.metadata:
                 cand.metadata["validation_reason"] = "GENUINE_PII"
 
+            # Apply GPE type overrides first
+            cand_clean = cand.text.strip().lower()
+            if cand_clean in self.indian_gpes:
+                cand.entity_type = "LOCATION"
+
             # Apply validation filters sequentially
             self._validate_generic_terms(text, cand)
             self._validate_address_vs_person(text, cand)
@@ -62,7 +75,7 @@ class CandidateValidator:
         """
         Filters out common document keywords matching PERSON or COMPANY unless preceded by personal context.
         """
-        if cand.entity_type not in ("PERSON", "COMPANY"):
+        if cand.entity_type not in ("PERSON", "COMPANY", "LOCATION"):
             return
 
         cand_clean = cand.text.strip().lower()

@@ -90,3 +90,22 @@ def test_validation_near_misses_and_suppressions():
     res13 = validator.validate_candidates(text13, [cand13])
     assert res13[0].metadata["validation_decision"] == "KEEP"
 
+    # 14. Pune COMPANY confusion -> Override to LOCATION
+    text14 = "located in Pune."
+    cand14 = PIIEntity("COMPANY", "Pune", 11, 15, 0.80, "spacy")
+    res14 = validator.validate_candidates(text14, [cand14])
+    assert res14[0].entity_type == "LOCATION"
+    assert res14[0].metadata["validation_decision"] == "KEEP"
+
+    # 15. INR boilerplate -> REJECT
+    text15 = "in exchange for INR."
+    cand15 = PIIEntity("COMPANY", "INR", 16, 19, 0.70, "spacy")
+    res15 = validator.validate_candidates(text15, [cand15])
+    assert res15[0].metadata["validation_decision"] == "REJECT"
+
+    # 16. Republic of India boilerplate -> REJECT
+    text16 = "currency of the Republic of India."
+    cand16 = PIIEntity("LOCATION", "Republic of India", 16, 33, 0.75, "presidio")
+    res16 = validator.validate_candidates(text16, [cand16])
+    assert res16[0].metadata["validation_decision"] == "REJECT"
+

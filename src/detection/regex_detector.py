@@ -41,6 +41,12 @@ class RegexDetector(BaseDetector):
             r"\b(?:\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}|\d{4}[-/.]\d{1,2}[-/.]\d{1,2})\b"
         )
 
+        # Registry / corporate entities pattern to capture full spans (resolves punctuation/comma splits)
+        self.registry_pattern = re.compile(
+            r"\b(?:Registrar of Companies\s*Maharashtra|Registrar of Companies(?:,\s*Maharashtra)?|RoC|ROC)\b",
+            re.IGNORECASE
+        )
+
     @staticmethod
     def is_valid_luhn(card_str: str) -> bool:
         """
@@ -167,5 +173,16 @@ class RegexDetector(BaseDetector):
                     confidence=0.50,
                     source="regex"
                 ))
+
+        # 7. Registries
+        for m in self.registry_pattern.finditer(text):
+            entities.append(PIIEntity(
+                entity_type="COMPANY_CANDIDATE",
+                text=m.group(),
+                start=m.start(),
+                end=m.end(),
+                confidence=0.95,
+                source="regex"
+            ))
 
         return entities

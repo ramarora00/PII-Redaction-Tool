@@ -33,3 +33,17 @@ In Milestone 1, we analyzed the document structure of the raw prospectus (`Red H
 
 Detailed metrics are stored in `evaluation/document_structure.md`.
 
+## Detection Architecture
+
+In Milestone 2, we built the modular candidate PII detection foundation:
+
+- **PIIEntity Model**: A standardized dataclass wrapper preserving candidate type, text value, start/end character offsets, detection source, and confidence scores.
+- **BaseDetector Interface**: An abstract interface defining `detect(text) -> List[PIIEntity]` which enables plugging in new detection sources without touching the rest of the application.
+- **Specialized Detectors**:
+  - `RegexDetector`: Handles structured entities (email, SSN, credit cards, IP addresses, date candidates) using boundaries and checksums (e.g. Luhn validation).
+  - `NERDetector`: Wraps spaCy to extract contextual entities (`PERSON_CANDIDATE`, `COMPANY_CANDIDATE`, `LOCATION_CANDIDATE`).
+  - `PresidioDetector`: Integrates Microsoft Presidio Analyzer Engine as an additional parallel detection source.
+- **Context-Aware Rules**: Differentiates Date of Birth (`DATE_OF_BIRTH`) from generic document dates (e.g. `Date of Allotment`) using keyword windows, and suppresses false positive phone/credit card candidates (e.g. `Order No`).
+- **Deferred Deconfliction**: Resolving overlaps, deduplication, and final replacement are explicitly deferred to subsequent milestones. Duplicate candidates from multiple sources are preserved.
+
+

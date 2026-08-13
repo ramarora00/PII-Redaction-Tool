@@ -61,5 +61,15 @@ In Milestone 3, we implemented the detection fusion and conflict resolution laye
   4. *Confidence & Length*: Fallbacks resolve in favor of higher confidence, then longer span length, then deterministic index positions.
 - **Safety Invariants**: The fusion layer asserts `0 <= start < end <= len(text)` and verifies that `text[start:end] == entity.text` matching string values.
 
+## Span Mapping into DOCX Runs
+
+In Milestone 4, we built the span mapping layer:
+
+- **Paragraph-Local Coordinates**: Avoids document-wide index drifting by keeping all text extraction and coordinate mappings strictly localized to individual paragraphs.
+- **Unambiguous Container Paths**: Defines `DocumentLocation` supporting container-path generation (e.g. `table / table=2 / row=3 / cell=4 / paragraph=10` or `body / paragraph=10`) to uniquely identify every paragraph in the document structure.
+- **Run Intersect Coordinate Mapping**: Slices logical character offsets back to individual DOCX runs, supporting single-run hits, matches split across multiple adjacent runs, and partial-run (mid-run) offsets.
+- **Defensive Safety Invariants**: Asserts that the concatenated text of mapped runs matches the PIIEntity text exactly, failing loudly to prevent document payload corruption.
+
+
 
 

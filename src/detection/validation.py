@@ -51,6 +51,7 @@ class CandidateValidator:
         Saves decision KEEP/REJECT and reason inside entity metadata.
         """
         validated_list = []
+        recovered_gpes = []
         for cand in candidates:
             # Set default validation metadata
             if cand.metadata is None:
@@ -75,7 +76,13 @@ class CandidateValidator:
             self._validate_financial_numbers(text, cand)
             self._validate_regulatory_and_corporate(text, cand)
 
+            # If the candidate was REJECTED due to ADDRESS_CONTEXT, recover GPE locations
+            if cand.metadata.get("validation_decision") == "REJECT" and cand.metadata.get("validation_reason") == "ADDRESS_CONTEXT":
+                self._recover_gpe_subspans(text, cand, recovered_gpes)
+
             validated_list.append(cand)
+            
+        validated_list.extend(recovered_gpes)
         return validated_list
 
     def _validate_generic_terms(self, text: str, cand: PIIEntity) -> None:
@@ -226,3 +233,50 @@ class CandidateValidator:
                     cand.text = trimmed_text
                     continue
             break
+
+    def _recover_gpe_subspans(self, text: str, cand: PIIEntity, recovered_list: List[PIIEntity]) -> None:
+        """
+        Scans address-rejected candidates for valid GPE location sub-spans and recovers them.
+        Only recovers a GPE sub-span if it is immediately followed by a PIN code (no alphabetical text in between).
+        Uses case-insensitive, word-boundary, longest-match-first matching.
+        """
+        vocab_sorted = sorted(list(self.indian_gpes), key=len, reverse=True)
+        cand_text = cand.text
+        
+        for term in vocab_sorted:
+            pattern = re.compile(r"\b" + re.escape(term) + r"\b", re.IGNORECASE)
+            for m in pattern.finditer(cand_text):
+                abs_start = cand.start + m.start()
+                abs_end = cand.start + m.end()
+                matched_text = text[abs_start:abs_end]
+                
+                # Context check: must be followed by a 6-digit PIN code (with optional space)
+                # within 25 characters with no intervening alphabetical letters.
+                suffix_context = text[abs_end:min(len(text), abs_end + 25)]
+                pin_match = re.search(r"\b\d{3}\s?\d{3}\b", suffix_context)
+                if not pin_match:
+                    continue
+                
+                text_between = suffix_context[:pin_match.start()]
+                if re.search(r"[a-zA-Z]", text_between):
+                    continue
+                
+                already_covered = False
+                for prev in recovered_list:
+                    if prev.start <= abs_start and abs_end <= prev.end:
+                        already_covered = True
+                        break
+                
+                if not already_covered:
+                    recovered_list.append(PIIEntity(
+                        entity_type="LOCATION",
+                        text=matched_text,
+                        start=abs_start,
+                        end=abs_end,
+                        confidence=0.90,
+                        source="validator_recovery",
+                        metadata={
+                            "validation_decision": "KEEP",
+                            "validation_reason": "GENUINE_PII"
+                        }
+                    ))

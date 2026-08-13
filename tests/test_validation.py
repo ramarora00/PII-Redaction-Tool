@@ -135,3 +135,18 @@ def test_validation_near_misses_and_suppressions():
     res20 = validator.validate_candidates(text20, [cand20])
     assert res20[0].metadata["validation_decision"] == "KEEP"
 
+    # 21. GPE Sub-span nested recovery -> Recover only Pune (due to PIN proximity) and suppress others
+    text21 = "Address is Village Birdewadi Chakan Taluka - Khed Pune 410 501"
+    cand21 = PIIEntity("PERSON", "Taluka - Khed Pune", 36, 54, 0.80, "spacy")
+    res21 = validator.validate_candidates(text21, [cand21])
+    # Should have the original rejected PERSON candidate
+    assert res21[0].metadata["validation_decision"] == "REJECT"
+    assert res21[0].metadata["validation_reason"] == "ADDRESS_CONTEXT"
+    
+    # Should have recovered ONLY Pune (PIN proximity)
+    recovered = [r for r in res21 if r.metadata.get("source") == "validator_recovery" or r.source == "validator_recovery"]
+    assert len(recovered) == 1
+    assert recovered[0].text == "Pune"
+    assert recovered[0].entity_type == "LOCATION"
+    assert recovered[0].metadata["validation_decision"] == "KEEP"
+

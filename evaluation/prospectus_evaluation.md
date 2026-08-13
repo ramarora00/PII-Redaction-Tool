@@ -8,13 +8,13 @@ This report presents quantitative metrics and performance characteristics collec
 
 | Profiling Category | Duration (seconds) | Percentage of Total Execution |
 | :--- | :---: | :---: |
-| **Total Evaluation Execution** | 75.9370s | 100.0% |
-| Document Loading Time | 0.2965s | 0.4% |
-| Regex Detector Time | 0.1251s | 0.2% |
-| spaCy NER Detector Time | 33.3487s | 43.9% |
-| Presidio Analyzer Time | 38.6473s | 50.9% |
-| Fusion Layer Time | 0.0427s | 0.1% |
-| Validation Layer Time | 0.0366s | 0.0% |
+| **Total Evaluation Execution** | 160.7021s | 100.0% |
+| Document Loading Time | 0.2852s | 0.2% |
+| Regex Detector Time | 0.2700s | 0.2% |
+| spaCy NER Detector Time | 70.7086s | 44.0% |
+| Presidio Analyzer Time | 80.8894s | 50.3% |
+| Fusion Layer Time | 0.1009s | 0.1% |
+| Validation Layer Time | 0.0920s | 0.1% |
 
 ---
 
@@ -40,8 +40,8 @@ This report presents quantitative metrics and performance characteristics collec
 | **Total Raw Candidates (Inputs)** | 5790 | Sum of all raw hits prior to fusion. |
 | **Merged Duplicates & Conflicts** | 760 | Candidates merged or dropped during overlapping deconfliction. |
 | **Final Resolved Candidates** | 5030 | Normalized candidates (including generic DATE). |
-| **Candidates Rejected by Validator** | 789 | Suspicious false positives filtered by context validator. |
-| **Final Redacted PII Spans** | 3280 | Verified PII entities (KEEP candidates). |
+| **Candidates Rejected by Validator** | 806 | Suspicious false positives filtered by context validator. |
+| **Final Redacted PII Spans** | 3263 | Verified PII entities (KEEP candidates). |
 
 ---
 
@@ -49,7 +49,7 @@ This report presents quantitative metrics and performance characteristics collec
 
 | Validation Reason | Suppression Count | Description |
 | :--- | :---: | :--- |
-| `GENERIC_DOCUMENT_TERM` | 756 | Common nouns / document metadata matching NER. |
+| `GENERIC_DOCUMENT_TERM` | 773 | Common nouns / document metadata matching NER. |
 | `ADDRESS_CONTEXT` | 32 | Address divisions misclassified as PERSON. |
 | `TECHNICAL_STANDARD` | 1 | Technical standard numbers. |
 | `FINANCIAL_CONTEXT` | 0 | Numerical currency and scale units. |
@@ -60,10 +60,10 @@ This report presents quantitative metrics and performance characteristics collec
 
 | PII Category | Final Redactions | Percentage of Redactions |
 | :--- | :---: | :---: |
-| **Total Redacted Spans** | 3280 | 100.0% |
-| `PERSON` | 514 | 15.7% |
-| `COMPANY` | 2115 | 64.5% |
-| `LOCATION` | 533 | 16.2% |
+| **Total Redacted Spans** | 3263 | 100.0% |
+| `PERSON` | 497 | 15.2% |
+| `COMPANY` | 2115 | 64.8% |
+| `LOCATION` | 533 | 16.3% |
 | `EMAIL` | 70 | 2.1% |
 | `PHONE` | 48 | 1.5% |
 | `ADDRESS` | 0 | 0.0% |
@@ -78,9 +78,9 @@ This report presents quantitative metrics and performance characteristics collec
 
 | Location Path Type | Redactions Count | Percentage of Redactions |
 | :--- | :---: | :---: |
-| **Total Redacted Spans** | 3280 | 100.0% |
-| Body Paragraphs | 1031 | 31.4% |
-| Table Cell Paragraphs | 2249 | 68.6% |
+| **Total Redacted Spans** | 3263 | 100.0% |
+| Body Paragraphs | 1018 | 31.2% |
+| Table Cell Paragraphs | 2245 | 68.8% |
 | Section Headers | 0 | 0.0% |
 | Section Footers | 0 | 0.0% |
 
@@ -180,21 +180,21 @@ Assessment: SUSPECTED_TRUE_POSITIVE
 ---
 
 Type: PERSON
-Text: SCRR
-Location: body / paragraph=49
-Detector: presidio
+Text: Reference Rate
+Location: body / paragraph=133
+Detector: spacy
 Final: PERSON (Reason: GENUINE_PII)
-Context: "...I ICDR Regulations, the SCRA, SCRR, and the Depositories Act, as..."
+Context: "Source: FBIL Reference Rate as available on www.fbil.org...."
 Assessment: SUSPECTED_TRUE_POSITIVE
 
 ---
 
 Type: PERSON
-Text: Directors
-Location: body / paragraph=114
+Text: Kushal Subbayya Hegde
+Location: body / paragraph=166
 Detector: spacy
 Final: PERSON (Reason: GENUINE_PII)
-Context: "...directly, to our Company, our Directors, our Promoters (including the..."
+Context: "Kushal Subbayya Hegde, Pushpa Kushal Hegde, Rajesh ..."
 Assessment: SUSPECTED_TRUE_POSITIVE
 
 ---
@@ -212,7 +212,7 @@ Assessment: SUSPECTED_TRUE_POSITIVE
 Type: EMAIL
 Text: Sarthak.malvadkar@kshinterantional.com
 Location: body / paragraph=745
-Detector: spacy + regex + presidio
+Detector: regex + spacy + presidio
 Final: EMAIL (Reason: GENUINE_PII)
 Context: "E-mail: Sarthak.malvadkar@kshinterantional.com"
 Assessment: SUSPECTED_TRUE_POSITIVE

@@ -69,3 +69,24 @@ def test_validation_near_misses_and_suppressions():
     cand10 = PIIEntity("PHONE", "9876543210", 9, 19, 0.90, "presidio")
     res10 = validator.validate_candidates(text10, [cand10])
     assert res10[0].metadata["validation_decision"] == "KEEP"
+
+    # 11. SCRR regulatory acronym -> REJECT PERSON
+    text11 = "compliance under the SCRR regulations."
+    cand11 = PIIEntity("PERSON", "SCRR", 21, 25, 0.80, "presidio")
+    res11 = validator.validate_candidates(text11, [cand11])
+    assert res11[0].metadata["validation_decision"] == "REJECT"
+    assert res11[0].metadata["validation_reason"] == "GENERIC_DOCUMENT_TERM"
+
+    # 12. our Directors -> REJECT PERSON
+    text12 = "This affects our Directors."
+    cand12 = PIIEntity("PERSON", "Directors", 17, 26, 0.85, "spacy")
+    res12 = validator.validate_candidates(text12, [cand12])
+    assert res12[0].metadata["validation_decision"] == "REJECT"
+    assert res12[0].metadata["validation_reason"] == "GENERIC_DOCUMENT_TERM"
+
+    # 13. Director Rajesh Hegde -> KEEP (Directors is part of a larger name structure)
+    text13 = "Director Rajesh Hegde is present."
+    cand13 = PIIEntity("PERSON", "Director Rajesh Hegde", 0, 21, 0.95, "spacy")
+    res13 = validator.validate_candidates(text13, [cand13])
+    assert res13[0].metadata["validation_decision"] == "KEEP"
+

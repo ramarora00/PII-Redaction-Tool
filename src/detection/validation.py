@@ -154,3 +154,30 @@ class CandidateValidator:
         if has_currency or has_scale:
             cand.metadata["validation_decision"] = "REJECT"
             cand.metadata["validation_reason"] = "FINANCIAL_CONTEXT"
+
+    def _validate_regulatory_and_corporate(self, text: str, cand: PIIEntity) -> None:
+        """
+        Suppresses false positive PERSON matches on generic corporate roles and regulatory acronyms.
+        """
+        if cand.entity_type != "PERSON":
+            return
+
+        cand_clean = cand.text.strip().lower()
+        
+        # 1. Check Regulatory Acronyms
+        if cand_clean in self.regulatory_acronyms:
+            cand.metadata["validation_decision"] = "REJECT"
+            cand.metadata["validation_reason"] = "GENERIC_DOCUMENT_TERM"
+            return
+            
+        # 2. Check Corporate Roles
+        if cand_clean in self.corporate_roles:
+            # Check context prefix (up to 20 characters before) for personal titles
+            start_w = max(0, cand.start - 20)
+            prefix_context = text[start_w:cand.start].lower()
+            prefix_tokens = set(re.findall(r"\b\w+\b", prefix_context))
+            
+            has_personal_title = any(title in prefix_tokens for title in {"mr", "ms", "mrs", "shri", "shree", "dr", "prof"})
+            if not has_personal_title:
+                cand.metadata["validation_decision"] = "REJECT"
+                cand.metadata["validation_reason"] = "GENERIC_DOCUMENT_TERM"

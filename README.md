@@ -70,6 +70,21 @@ In Milestone 4, we built the span mapping layer:
 - **Run Intersect Coordinate Mapping**: Slices logical character offsets back to individual DOCX runs, supporting single-run hits, matches split across multiple adjacent runs, and partial-run (mid-run) offsets.
 - **Defensive Safety Invariants**: Asserts that the concatenated text of mapped runs matches the PIIEntity text exactly, failing loudly to prevent document payload corruption.
 
+## Anonymization & Entity Resolution
+
+In Milestone 5, we implemented the entity resolution, relationship modeling, and deterministic synthetic identity generation layer:
+
+- **Decoupled Normalization & Resolution**: Decouples comparative string cleanups (stripping titles, trimming spacing, case-insensitivity) from the entity resolution layer (determining if two mentions represent the same underlying entity).
+- **Conservative Alias Merging**: Automatically groups exact name overlaps. Resolves short names (e.g. `"Rajesh"`) to full name canonical records (e.g. `"Rajesh Hegde"`) *only* if a single, unique candidate exists in the document, splitting them otherwise to prevent false merges.
+- **Typed Keys**: Implements prefix keys (e.g. `PERSON::` and `EMAIL::`) in the store to eliminate cross-type namespace collisions.
+- **Stable Seeded Generation**: Derives configuration seeds from the resolved canonical ID (e.g. `PERSON_001`) rather than the raw mention string. This ensures aliases produce identical replacements (e.g. both `"Mr. Rajesh Hegde"` and `"Rajesh Hegde"` map to `"John Smith"`).
+- **Format-Preserving Synthetic Values**:
+  - *Email*: Replaces email prefixes using a slugified version of the linked fake name.
+  - *Credit Card*: Generates random digits passing Luhn validation matching the exact length of the original card, without preserving issuer BIN prefixes.
+  - *Phones/SSNs/IPs/Dates*: Replaces digits while keeping the spacing, punctuation, and structural layouts intact.
+- **Relationship Preservation**: Links associated emails, phones, and DOB values to `PERSON` canonical profiles, maintaining realistic identity links.
+
+
 
 
 

@@ -84,6 +84,21 @@ In Milestone 5, we implemented the entity resolution, relationship modeling, and
   - *Phones/SSNs/IPs/Dates*: Replaces digits while keeping the spacing, punctuation, and structural layouts intact.
 - **Relationship Preservation**: Links associated emails, phones, and DOB values to `PERSON` canonical profiles, maintaining realistic identity links.
 
+## DOCX Reconstruction & Redaction
+
+In Milestone 6, we implemented the document reconstruction and inline run redaction pipeline:
+
+- **Hyperlink XML Crawler**: Traverses paragraph XML structures to extract child `w:r` elements nested within `w:hyperlink` tags, matching standard runs. This ensures that hyperlinked PII (e.g. email links) is fully redacted.
+- **Two-Pass Traverse Parsing**:
+  - *Pass 1*: Iterates through body paragraphs, tables (row-by-row, cell-by-cell), section headers, and section footers, detects candidate entities, and registers them globally in the `EntityStore` to resolve aliases.
+  - *Pass 2*: Traverses the document again, maps resolved character coordinates back to physical runs, and executes the inline replacement.
+- **Right-to-Left Inline Replacement**: Applies replacements sorted by start index descending. Modifying a run's text length inline does not invalidate the offsets of any matches to its left.
+- **Unified Inline Replacement Algorithm**:
+  - The first run span in a match receives the synthetic replacement text (pre-calculated deterministically).
+  - All subsequent run spans have their matched segments deleted while keeping styling and markup structures intact.
+- **Atomic Writing**: Saves the output to a temp file, validates it compiles, and moves it to the target output path, leaving the original input document byte-for-byte untouched.
+
+
 
 
 

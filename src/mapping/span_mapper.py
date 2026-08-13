@@ -13,8 +13,8 @@ def reconstruct_paragraph_text(runs: List[Any]) -> Tuple[str, List[Tuple[int, in
     offsets: List[Tuple[int, int]] = []
     for run in runs:
         run_text = run.text if run.text is not None else ""
-        # Normalize Unicode dashes / special characters to standard spaces for clean token boundaries
-        normalized = run_text.replace("\u2013", " ").replace("\u2014", " ").replace("\ufffd", " ")
+        # Normalize Unicode dashes / special characters / whitespace to standard spaces for clean token boundaries
+        normalized = run_text.replace("\u2013", " ").replace("\u2014", " ").replace("\ufffd", " ").replace("\t", " ").replace("\xa0", " ")
         start_offset = len(text)
         end_offset = start_offset + len(normalized)
         text += normalized

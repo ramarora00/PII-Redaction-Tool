@@ -199,3 +199,15 @@ def test_safety_invariant_failure():
     
     with pytest.raises(ValueError, match="Safety Invariant Failed"):
         map_span_to_runs(6, 11, entity, offsets, runs)
+
+def test_reconstruct_paragraph_text_whitespace_normalization():
+    runs = [
+        MockRun("ICICI\tSecurities"),
+        MockRun("\xa0Limited")
+    ]
+    text, offsets = reconstruct_paragraph_text(runs)
+    assert text == "ICICI Securities Limited"
+    assert offsets == [
+        (0, 16),
+        (16, 24)
+    ]

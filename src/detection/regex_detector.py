@@ -47,6 +47,11 @@ class RegexDetector(BaseDetector):
             re.IGNORECASE
         )
 
+        # High-confidence corporate names pattern (resolves contextless and fragmented company names)
+        self.corporate_pattern = re.compile(
+            r"\b(?:[Ff]ormerly\s+)?(?:[A-Z][a-zA-Z0-9&]*\s+)+(?:(?:and|of|&)\s+)?(?:[A-Z][a-zA-Z0-9&]*\s+)*(?:Limited|Private Limited|LLP|Corporation|Pvt\.\s+Ltd\.|Ltd\.)\b"
+        )
+
     @staticmethod
     def is_valid_luhn(card_str: str) -> bool:
         """
@@ -176,6 +181,17 @@ class RegexDetector(BaseDetector):
 
         # 7. Registries
         for m in self.registry_pattern.finditer(text):
+            entities.append(PIIEntity(
+                entity_type="COMPANY_CANDIDATE",
+                text=m.group(),
+                start=m.start(),
+                end=m.end(),
+                confidence=0.95,
+                source="regex"
+            ))
+
+        # 8. High-confidence corporate names
+        for m in self.corporate_pattern.finditer(text):
             entities.append(PIIEntity(
                 entity_type="COMPANY_CANDIDATE",
                 text=m.group(),

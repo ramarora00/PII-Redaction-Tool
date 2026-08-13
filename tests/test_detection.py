@@ -221,3 +221,16 @@ def test_regex_registries():
     assert "RoC" in texts
     for c in companies:
         assert text[c.start:c.end] == c.text
+
+def test_regex_corporate_patterns():
+    detector = RegexDetector()
+    text = "We hired CARE Analytics and Advisory Private Limited and CG Power and Industrial Solutions Limited, formerly Link Intime India Private Limited, for ICICI Securities Limited."
+    results = detector.detect(text)
+    companies = [c for c in results if c.entity_type == "COMPANY_CANDIDATE"]
+    texts = [c.text for c in companies]
+    assert "CARE Analytics and Advisory Private Limited" in texts
+    assert "CG Power and Industrial Solutions Limited" in texts
+    assert "formerly Link Intime India Private Limited" in texts
+    assert "ICICI Securities Limited" in texts
+    for c in companies:
+        assert text[c.start:c.end] == c.text

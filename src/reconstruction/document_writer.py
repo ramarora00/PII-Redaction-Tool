@@ -83,10 +83,19 @@ def redact_document(input_path: str, output_path: str, store: EntityStore) -> No
         resolved = engine.get_resolved_entities(text)
         # Filter out generic DATE (non-PII) to prevent redacting generic document dates
         resolved = [e for e in resolved if e.entity_type != "DATE"]
-        if resolved:
+        
+        # Candidate Validation Layer
+        from src.detection.validation import CandidateValidator
+        validator = CandidateValidator()
+        validated = validator.validate_candidates(text, resolved)
+        
+        # Only keep candidates approved by the validation layer
+        keep_pii = [e for e in validated if e.metadata.get("validation_decision") == "KEEP"]
+        
+        if keep_pii:
             # Register in EntityStore
-            store.register_candidates(resolved)
-            all_resolved_pii.append((paragraph, runs, resolved))
+            store.register_candidates(keep_pii)
+            all_resolved_pii.append((paragraph, runs, keep_pii))
 
     # Generate synthetic replacements for registered entities
     store.generate_all_replacements()

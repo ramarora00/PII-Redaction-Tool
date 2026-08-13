@@ -210,6 +210,16 @@ class SyntheticGenerator:
                 
         return separator.join(result)
 
+    def generate_address(self, canonical_id: str) -> str:
+        """
+        Generates a deterministic synthetic physical/mailing address.
+        """
+        rng = self._get_seeded_rng(canonical_id)
+        self.faker.seed_instance(rng.randint(0, 1000000))
+        # Replace newlines with comma-space to match inline structure
+        fake_address = self.faker.address().replace('\n', ', ')
+        return fake_address
+
     def generate_location(self, canonical_id: str) -> str:
         """
         Generates a deterministic synthetic location.

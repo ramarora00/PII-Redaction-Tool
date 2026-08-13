@@ -36,7 +36,10 @@ CANONICAL_TYPES = {
     
     "COMPANY": "COMPANY",
     "COMPANY_CANDIDATE": "COMPANY",
-    "ORG": "COMPANY"
+    "ORG": "COMPANY",
+    
+    "ADDRESS": "ADDRESS",
+    "ADDRESS_CANDIDATE": "ADDRESS"
 }
 
 # Semantic strength priority mapping (higher is stronger)
@@ -52,7 +55,9 @@ TYPE_STRENGTH = {
     
     "PERSON": 1,
     "COMPANY": 1,
-    "LOCATION": 1
+    "LOCATION": 1,
+    
+    "ADDRESS": 2
 }
 
 def are_compatible(type_a: str, type_b: str) -> bool:

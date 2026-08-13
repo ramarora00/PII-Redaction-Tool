@@ -30,7 +30,7 @@ This report presents verification outcomes of the structural integrity checks an
 Every original value of a critical PII entity is searched across the **entire** redacted document.
 Any occurrence is a **failure** — these values must never survive redaction.
 
-- **Entities Checked**: 178
+- **Entities Checked**: 177
 - **Leaks Found**: 0
 - **Status**: **PASSED**
 
@@ -46,7 +46,7 @@ For each COMPANY/LOCATION entity that was selected for redaction, the checker ve
 
 This avoids false positives from legitimate unrelated occurrences of the same term elsewhere.
 
-- **Redaction Spans Verified**: 1953
+- **Redaction Spans Verified**: 1954
 - **Span Verification Failures**: 0
 - **Status**: **PASSED**
 
@@ -56,6 +56,6 @@ This avoids false positives from legitimate unrelated occurrences of the same te
 
 ## 3. Redaction Manifest Summary
 
-- **Total Redactions Applied**: 2367
-- **Critical PII Redactions**: 414
-- **Contextual Entity Redactions**: 1953
+- **Total Redactions Applied**: 2365
+- **Critical PII Redactions**: 411
+- **Contextual Entity Redactions**: 1954

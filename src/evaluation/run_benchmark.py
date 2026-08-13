@@ -97,6 +97,12 @@ def run_benchmark_eval(gt_path: str, doc_path: str, report_output_path: str) -> 
     false_positives_list: List[Dict[str, Any]] = []
     false_negatives_list: List[Dict[str, Any]] = []
 
+    # Token-level metrics for explicit Accuracy calculation
+    token_tp = 0
+    token_tn = 0
+    token_fp = 0
+    token_fn = 0
+
     print(f"Evaluating {len(gt_data['blocks'])} blocks against human ground truth...")
 
     for block_entry in gt_data["blocks"]:
@@ -138,6 +144,40 @@ def run_benchmark_eval(gt_path: str, doc_path: str, report_output_path: str) -> 
         # 3. Validate
         validated = candidate_validator.validate_candidates(text, resolved_pii)
         pred_entities = [e for e in validated if e.metadata.get("validation_decision") == "KEEP"]
+
+        # --- Token-level Binary Classification ---
+        words = text.split()
+        
+        def get_pii_tokens(entities):
+            pii_tokens = set()
+            for entity in entities:
+                current_char = 0
+                for i, word in enumerate(words):
+                    word_start = text.find(word, current_char)
+                    word_end = word_start + len(word)
+                    current_char = word_end
+                    
+                    e_start = entity["start"] if isinstance(entity, dict) else entity.start
+                    e_end = entity["end"] if isinstance(entity, dict) else entity.end
+                    
+                    if e_start < word_end and e_end > word_start:
+                        pii_tokens.add(i)
+            return pii_tokens
+
+        actual_pii_tokens = get_pii_tokens(normalized_gt)
+        predicted_pii_tokens = get_pii_tokens(pred_entities)
+        
+        for i in range(len(words)):
+            is_actual = i in actual_pii_tokens
+            is_pred = i in predicted_pii_tokens
+            if is_actual and is_pred:
+                token_tp += 1
+            elif not is_actual and not is_pred:
+                token_tn += 1
+            elif not is_actual and is_pred:
+                token_fp += 1
+            elif is_actual and not is_pred:
+                token_fn += 1
 
         # --- A. STRICT MATCHING ---
         matched_gt_strict = set()
@@ -347,6 +387,8 @@ def run_benchmark_eval(gt_path: str, doc_path: str, report_output_path: str) -> 
     os.makedirs(os.path.dirname(os.path.abspath(report_output_path)), exist_ok=True)
     
     with open(report_output_path, "w", encoding="utf-8") as f:
+        token_accuracy = (token_tp + token_tn) / (token_tp + token_tn + token_fp + token_fn) if (token_tp + token_tn + token_fp + token_fn) > 0 else 0.0
+        
         f.write(f"""# Ground-Truth Evaluation & Metrics Report
 
 This report presents strict exact-span/exact-type metrics alongside semantic/overlap-aware metrics calculated against the human-labeled ground truth dataset in `evaluation/ground_truth.json`.
@@ -354,6 +396,15 @@ This report presents strict exact-span/exact-type metrics alongside semantic/ove
 ---
 
 ## 1. Overall Performance Metrics
+
+### Token-Level Binary Classification (Accuracy)
+- **Evaluation Unit:** Token-level binary classification (PII vs Non-PII) computed across all evaluated benchmark blocks.
+- **Normalization:** Overlapping ground-truth annotations were deduplicated/normalized prior to token labeling to properly define the ground-truth population. Tokenization relies on simple whitespace splitting.
+- **TP (Actual PII predicted as PII):** {token_tp}
+- **TN (Actual Non-PII predicted as Non-PII):** {token_tn}
+- **FP (Actual Non-PII predicted as PII):** {token_fp}
+- **FN (Actual PII predicted as Non-PII):** {token_fn}
+- **Accuracy:** {token_accuracy*100:.1f}%
 
 ### A. Strict Exact-Span Matching
 | Metric Mode | Precision | Recall | F1-Score | True Positives | False Positives | False Negatives |

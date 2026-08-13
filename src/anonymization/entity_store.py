@@ -178,6 +178,8 @@ class EntityStore:
                 self.id_to_synthetic[cid] = self.generator.generate_date(cid, original_text, is_dob=True)
             elif cid.startswith("DATE_"):
                 self.id_to_synthetic[cid] = self.generator.generate_date(cid, original_text, is_dob=False)
+            elif cid.startswith("ADDRESS_"):
+                self.id_to_synthetic[cid] = self.generator.generate_address(cid)
             elif cid.startswith("LOCATION_"):
                 self.id_to_synthetic[cid] = self.generator.generate_location(cid)
             else:

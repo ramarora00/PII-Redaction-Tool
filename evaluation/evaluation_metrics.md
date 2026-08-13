@@ -6,23 +6,32 @@ This report presents strict exact-span/exact-type metrics alongside semantic/ove
 
 ## 1. Overall Performance Metrics
 
+### Token-Level Binary Classification (Accuracy)
+- **Evaluation Unit:** Token-level binary classification (PII vs Non-PII) computed across all evaluated benchmark blocks.
+- **Normalization:** Overlapping ground-truth annotations were deduplicated/normalized prior to token labeling to properly define the ground-truth population. Tokenization relies on simple whitespace splitting.
+- **TP (Actual PII predicted as PII):** 86
+- **TN (Actual Non-PII predicted as Non-PII):** 929
+- **FP (Actual Non-PII predicted as PII):** 10
+- **FN (Actual PII predicted as Non-PII):** 0
+- **Accuracy:** 99.0%
+
 ### A. Strict Exact-Span Matching
 | Metric Mode | Precision | Recall | F1-Score | True Positives | False Positives | False Negatives |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Micro Average** | 89.7% | 83.9% | 86.7% | 26 | 3 | 5 |
-| **Macro Average** | 89.2% | 93.8% | 90.4% | - | - | - |
+| **Micro Average** | 87.5% | 82.4% | 84.8% | 28 | 4 | 6 |
+| **Macro Average** | 85.4% | 89.2% | 86.4% | - | - | - |
 
 ### B. Semantic / Overlap-Aware Matching (One-to-One)
 | Metric Mode | Precision | Recall | F1-Score | True Positives | False Positives | False Negatives |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Micro Average** | 89.7% | 83.9% | 86.7% | 26 | 3 | 5 |
-| **Macro Average** | 89.2% | 93.8% | 90.4% | - | - | - |
+| **Micro Average** | 90.6% | 85.3% | 87.9% | 29 | 3 | 5 |
+| **Macro Average** | 91.0% | 94.8% | 92.0% | - | - | - |
 
 ### C. Normalized Semantic Matching (One-to-One Overlap on Deduplicated GT)
 | Metric Mode | Precision | Recall | F1-Score | True Positives | False Positives | False Negatives |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Micro Average** | 89.7% | 100.0% | 94.5% | 26 | 3 | 0 |
-| **Macro Average** | 89.2% | 100.0% | 93.8% | - | - | - |
+| **Micro Average** | 90.6% | 100.0% | 95.1% | 29 | 3 | 0 |
+| **Macro Average** | 91.0% | 100.0% | 94.8% | - | - | - |
 
 > [!NOTE]
 > **Strict Exact-Span Matching vs Normalized Semantic Matching**
@@ -38,6 +47,7 @@ This report presents strict exact-span/exact-type metrics alongside semantic/ove
 ### A. Strict Exact-Span Metrics
 | PII Category | TP | FP | FN | Precision | Recall | F1-Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ADDRESS` | 2 | 1 | 1 | 66.7% | 66.7% | 66.7% |
 | `COMPANY` | 11 | 1 | 5 | 91.7% | 68.8% | 78.6% |
 | `EMAIL` | 3 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | `LOCATION` | 7 | 1 | 0 | 87.5% | 100.0% | 93.3% |
@@ -47,6 +57,7 @@ This report presents strict exact-span/exact-type metrics alongside semantic/ove
 ### B. Semantic / Overlap-Aware Metrics
 | PII Category | TP | FP | FN | Precision | Recall | F1-Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ADDRESS` | 3 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | `COMPANY` | 11 | 1 | 5 | 91.7% | 68.8% | 78.6% |
 | `EMAIL` | 3 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | `LOCATION` | 7 | 1 | 0 | 87.5% | 100.0% | 93.3% |
@@ -56,6 +67,7 @@ This report presents strict exact-span/exact-type metrics alongside semantic/ove
 ### C. Normalized Semantic Metrics
 | PII Category | TP | FP | FN | Precision | Recall | F1-Score |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ADDRESS` | 3 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | `COMPANY` | 11 | 1 | 0 | 91.7% | 100.0% | 95.7% |
 | `EMAIL` | 3 | 0 | 0 | 100.0% | 100.0% | 100.0% |
 | `LOCATION` | 7 | 1 | 0 | 87.5% | 100.0% | 93.3% |
@@ -67,7 +79,7 @@ This report presents strict exact-span/exact-type metrics alongside semantic/ove
 ## 3. Detailed Error Analysis (Strict Matching)
 
 ### Suspected False Positives (Detected but not in Ground Truth)
-Total: 3
+Total: 4
 
 - **Type**: `COMPANY` | **Text**: `"the General Information Document"` | **Location**: body / paragraph=47
   *Context*: "This Red Herring Prospectus uses certain definitions and abbreviations which, unless the context oth..."
@@ -75,11 +87,13 @@ Total: 3
   *Context*: "Source: FBIL Reference Rate as available on www.fbil.org.in. and www.oanda.com/bvi-en/ Notes:..."
 - **Type**: `LOCATION` | **Text**: `"the Supa Facility"` | **Location**: body / paragraph=148
   *Context*: "Any delays or cost overruns in the completion of the construction of the Supa Facility;..."
+- **Type**: `ADDRESS` | **Text**: `"3 Inspire BKC G Block, Bandra Kurla Complex"` | **Location**: body / paragraph=754
+  *Context*: "801-804, Wing A, Building No. 3 Inspire BKC G Block, Bandra Kurla Complex..."
 
 ---
 
 ### Suspected False Negatives (PII Missed by Pipeline)
-Total: 5
+Total: 6
 
 - **Type**: `COMPANY` | **Text**: `"Registrar of Companies"` | **Location**: body / paragraph=24
   *Context*: "Our Company was originally incorporated as “Bhandary Metal Extrusion Private Limited” under the prov..."
@@ -91,3 +105,5 @@ Total: 5
   *Context*: "Our Company was originally incorporated as “Bhandary Metal Extrusion Private Limited” under the prov..."
 - **Type**: `COMPANY` | **Text**: `"Registrar of Companies"` | **Location**: body / paragraph=24
   *Context*: "Our Company was originally incorporated as “Bhandary Metal Extrusion Private Limited” under the prov..."
+- **Type**: `ADDRESS` | **Text**: `"3 Inspire BKC G Block, Bandra Kurla Complex"` | **Location**: body / paragraph=754
+  *Context*: "801-804, Wing A, Building No. 3 Inspire BKC G Block, Bandra Kurla Complex..."

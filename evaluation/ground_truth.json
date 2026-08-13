@@ -15,7 +15,7 @@
     },
     {
       "container_path": "body / paragraph=24",
-      "text": "Our Company was originally incorporated as “Bhandary Metal Extrusion Private Limited” under the provisions of the Companies Act, 1956, pursuant to a certificate of incorporation dated July 30, 1979, issued by the Registrar of Companies, Maharashtra at Bombay. Subsequently, the name of our Company was changed from “Bhandary Metal Extrusion Private Limited” to “KSH International Private Limited” pursuant to a resolution dated June 1, 1996 passed by our Board and a resolution dated June 24, 1996 passed by our shareholders, post which a fresh certificate of incorporation dated July 4, 1996 was issued by Registrar of Companies Maharashtra at Mumbai pursuant to change of name under the Companies Act, 1956. Further, pursuant to a special resolution passed by our Shareholders on January 13, 2011 which was confirmed by an order of the regional director dated August 16, 2011, the registered office of our Company was shifted from the jurisdiction of Registrar of Companies, Maharashtra at Mumbai to the jurisdiction of the Registrar of Companies, Maharashtra at Pune, and a certificate of registration of the order of regional director confirming transfer of the registered office within the same state was issued to us on October 13, 2011, by the RoC. On the conversion of our Company from a private limited company to a public limited company, pursuant to a resolution passed by our Board on December 11, 2024 and a special resolution passed by our Shareholders on December 19, 2024, the name of our Company was changed to “KSH International Limited” and a fresh certificate of incorporation was issued by the Registrar of Companies, Central Processing Centre on January 20, 2025. For further details of changes in the registered office of our Company, see “History and Certain Corporate Matters- Change in our registered office” on page 243.",
+      "text": "Our Company was originally incorporated as \u201cBhandary Metal Extrusion Private Limited\u201d under the provisions of the Companies Act, 1956, pursuant to a certificate of incorporation dated July 30, 1979, issued by the Registrar of Companies, Maharashtra at Bombay. Subsequently, the name of our Company was changed from \u201cBhandary Metal Extrusion Private Limited\u201d to \u201cKSH International Private Limited\u201d pursuant to a resolution dated June 1, 1996 passed by our Board and a resolution dated June 24, 1996 passed by our shareholders, post which a fresh certificate of incorporation dated July 4, 1996 was issued by Registrar of Companies Maharashtra at Mumbai pursuant to change of name under the Companies Act, 1956. Further, pursuant to a special resolution passed by our Shareholders on January 13, 2011 which was confirmed by an order of the regional director dated August 16, 2011, the registered office of our Company was shifted from the jurisdiction of Registrar of Companies, Maharashtra at Mumbai to the jurisdiction of the Registrar of Companies, Maharashtra at Pune, and a certificate of registration of the order of regional director confirming transfer of the registered office within the same state was issued to us on October 13, 2011, by the RoC. On the conversion of our Company from a private limited company to a public limited company, pursuant to a resolution passed by our Board on December 11, 2024 and a special resolution passed by our Shareholders on December 19, 2024, the name of our Company was changed to \u201cKSH International Limited\u201d and a fresh certificate of incorporation was issued by the Registrar of Companies, Central Processing Centre on January 20, 2025. For further details of changes in the registered office of our Company, see \u201cHistory and Certain Corporate Matters- Change in our registered office\u201d on page 243.",
       "entities": [
         {
           "entity_type": "COMPANY",
@@ -212,7 +212,7 @@
     },
     {
       "container_path": "table / table=0 / row=1 / cell=0 / paragraph=0",
-      "text": "11/3, 11/4 and 11/5 Village Birdewadi Chakan Taluka - Khed Pune – 410 501",
+      "text": "11/3, 11/4 and 11/5 Village Birdewadi Chakan Taluka - Khed Pune \u2013 410 501",
       "entities": [
         {
           "entity_type": "LOCATION",
@@ -284,22 +284,22 @@
     },
     {
       "container_path": "body / paragraph=121",
-      "text": "“Rupees” or “INR” or “₹” or “Rs.” are to Indian Rupees, the official currency of the Republic of India;",
+      "text": "\u201cRupees\u201d or \u201cINR\u201d or \u201c\u20b9\u201d or \u201cRs.\u201d are to Indian Rupees, the official currency of the Republic of India;",
       "entities": []
     },
     {
       "container_path": "body / paragraph=122",
-      "text": "“U.S $”, “U.S. Dollar”, “USD” are to United States Dollars, the official currency of the United States of America;",
+      "text": "\u201cU.S $\u201d, \u201cU.S. Dollar\u201d, \u201cUSD\u201d are to United States Dollars, the official currency of the United States of America;",
       "entities": []
     },
     {
       "container_path": "body / paragraph=123",
-      "text": "‘EUR’, ‘Euro’ and ‘€’ are to the official currency of the European Union; and",
+      "text": "\u2018EUR\u2019, \u2018Euro\u2019 and \u2018\u20ac\u2019 are to the official currency of the European Union; and",
       "entities": []
     },
     {
       "container_path": "body / paragraph=124",
-      "text": "“SEK” are to Swedish Krona, the official currency of Sweden.",
+      "text": "\u201cSEK\u201d are to Swedish Krona, the official currency of Sweden.",
       "entities": []
     },
     {
@@ -364,7 +364,7 @@
     },
     {
       "container_path": "body / paragraph=159",
-      "text": "For further details, see “Our Business” on page 211.",
+      "text": "For further details, see \u201cOur Business\u201d on page 211.",
       "entities": []
     },
     {
@@ -374,12 +374,12 @@
     },
     {
       "container_path": "body / paragraph=163",
-      "text": "For further details, see “Industry Overview” on page 137.",
+      "text": "For further details, see \u201cIndustry Overview\u201d on page 137.",
       "entities": []
     },
     {
       "container_path": "body / paragraph=167",
-      "text": "For further details, see “Our Promoters and Promoter Group” on page 269.",
+      "text": "For further details, see \u201cOur Promoters and Promoter Group\u201d on page 269.",
       "entities": []
     },
     {
@@ -394,7 +394,7 @@
     },
     {
       "container_path": "body / paragraph=181",
-      "text": "For further information, see “Objects of the Offer” on page 106.",
+      "text": "For further information, see \u201cObjects of the Offer\u201d on page 106.",
       "entities": []
     },
     {
@@ -419,7 +419,7 @@
     },
     {
       "container_path": "body / paragraph=190",
-      "text": "For further details, see “Capital Structure” on page 84.",
+      "text": "For further details, see \u201cCapital Structure\u201d on page 84.",
       "entities": []
     },
     {
@@ -444,8 +444,44 @@
     },
     {
       "container_path": "body / paragraph=201",
-      "text": "For further details, see “Capital Structure” on page 84.",
+      "text": "For further details, see \u201cCapital Structure\u201d on page 84.",
       "entities": []
+    },
+    {
+      "container_path": "body / paragraph=754",
+      "text": "801-804, Wing A, Building No. 3 Inspire BKC G Block, Bandra Kurla Complex",
+      "entities": [
+        {
+          "text": "3 Inspire BKC G Block, Bandra Kurla Complex",
+          "entity_type": "ADDRESS",
+          "start": 32,
+          "end": 75
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=776",
+      "text": "801-804, Wing A, Building No 3 Inspire BKC, G Block",
+      "entities": [
+        {
+          "text": "3 Inspire BKC, G Block",
+          "entity_type": "ADDRESS",
+          "start": 29,
+          "end": 51
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=902",
+      "text": "IndusInd Bank Limited 2401 Gen Thimmayya Road, Cantonment",
+      "entities": [
+        {
+          "text": "2401 Gen Thimmayya Road, Cantonment",
+          "entity_type": "ADDRESS",
+          "start": 22,
+          "end": 57
+        }
+      ]
     }
   ]
 }

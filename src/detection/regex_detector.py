@@ -52,6 +52,19 @@ class RegexDetector(BaseDetector):
             r"\b(?:[Ff]ormerly\s+)?(?:[A-Z][a-zA-Z0-9&]*\s+)+(?:(?:and|of|&)\s+)?(?:[A-Z][a-zA-Z0-9&]*\s+)*(?:Limited|Private Limited|LLP|Corporation|Pvt\.\s+Ltd\.|Ltd\.)\b"
         )
 
+        # Address patterns (conservative structural markers)
+        # Address patterns (conservative structural markers)
+        self.address_pattern_1 = re.compile(
+            r"\b(?:\d+[a-zA-Z]?(?:-\d+[a-zA-Z]?)?\s+(?:[A-Z][a-zA-Z0-9.,-]*\s+){1,4}(?:Street|St|Road|Rd|Avenue|Ave|Boulevard|Blvd|Lane|Ln|Drive|Dr|Marg|Bhavan|Estate|Phase|Sector|Block|Plot)(?:,\s*[A-Z][a-zA-Z0-9.-]*(?:\s+[A-Z][a-zA-Z0-9.-]*)*){0,3}(?:\s*-?\s*\d{5,6})?)\b"
+        )
+        self.address_pattern_2 = re.compile(
+            r"\b(?:Registered Office|Regd\.? Off\.?|Corporate Office)\s*:\s*(?:[A-Z0-9][a-zA-Z0-9.,\-\s]{10,120})(?=\n|$|\.)",
+            re.IGNORECASE
+        )
+        self.address_pattern_3 = re.compile(
+            r"\b(?:[A-Z][a-zA-Z]+(?:-[a-zA-Z]+)?(?:\s+[A-Z][a-zA-Z]+)*,\s*[A-Z][a-zA-Z]+(?:\s+[A-Z][a-zA-Z]+)*(?:\s+(?:-\s*)?\d{5,6}))\b"
+        )
+
     @staticmethod
     def is_valid_luhn(card_str: str) -> bool:
         """
@@ -200,5 +213,22 @@ class RegexDetector(BaseDetector):
                 confidence=0.95,
                 source="regex"
             ))
+
+        # 9. Addresses
+        for pattern in [self.address_pattern_1, self.address_pattern_2, self.address_pattern_3]:
+            for m in pattern.finditer(text):
+                raw = m.group()
+                stripped = raw.strip('.,:; \n\r')
+                start = m.start() + raw.find(stripped)
+                end = start + len(stripped)
+                if len(stripped) > 8:
+                    entities.append(PIIEntity(
+                        entity_type="ADDRESS",
+                        text=stripped,
+                        start=start,
+                        end=end,
+                        confidence=0.90,
+                        source="regex"
+                    ))
 
         return entities

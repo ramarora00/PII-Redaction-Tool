@@ -1,0 +1,451 @@
+{
+  "document_hash": "8b5c93f7642d659e64b51be9f6172c86c2825417f376ca1800ed331515e6f929",
+  "blocks": [
+    {
+      "container_path": "body / paragraph=11",
+      "text": "KSH INTERNATIONAL LIMITED CORPORATE IDENTITY NUMBER: U28129PN1979PLC141032",
+      "entities": [
+        {
+          "entity_type": "COMPANY",
+          "text": "KSH INTERNATIONAL LIMITED",
+          "start": 0,
+          "end": 25
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=24",
+      "text": "Our Company was originally incorporated as “Bhandary Metal Extrusion Private Limited” under the provisions of the Companies Act, 1956, pursuant to a certificate of incorporation dated July 30, 1979, issued by the Registrar of Companies, Maharashtra at Bombay. Subsequently, the name of our Company was changed from “Bhandary Metal Extrusion Private Limited” to “KSH International Private Limited” pursuant to a resolution dated June 1, 1996 passed by our Board and a resolution dated June 24, 1996 passed by our shareholders, post which a fresh certificate of incorporation dated July 4, 1996 was issued by Registrar of Companies Maharashtra at Mumbai pursuant to change of name under the Companies Act, 1956. Further, pursuant to a special resolution passed by our Shareholders on January 13, 2011 which was confirmed by an order of the regional director dated August 16, 2011, the registered office of our Company was shifted from the jurisdiction of Registrar of Companies, Maharashtra at Mumbai to the jurisdiction of the Registrar of Companies, Maharashtra at Pune, and a certificate of registration of the order of regional director confirming transfer of the registered office within the same state was issued to us on October 13, 2011, by the RoC. On the conversion of our Company from a private limited company to a public limited company, pursuant to a resolution passed by our Board on December 11, 2024 and a special resolution passed by our Shareholders on December 19, 2024, the name of our Company was changed to “KSH International Limited” and a fresh certificate of incorporation was issued by the Registrar of Companies, Central Processing Centre on January 20, 2025. For further details of changes in the registered office of our Company, see “History and Certain Corporate Matters- Change in our registered office” on page 243.",
+      "entities": [
+        {
+          "entity_type": "COMPANY",
+          "text": "Bhandary Metal Extrusion Private Limited",
+          "start": 44,
+          "end": 84
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Bhandary Metal Extrusion Private Limited",
+          "start": 316,
+          "end": 356
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "KSH International Private Limited",
+          "start": 362,
+          "end": 395
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "KSH International Limited",
+          "start": 1529,
+          "end": 1554
+        },
+        {
+          "entity_type": "LOCATION",
+          "text": "Bombay",
+          "start": 252,
+          "end": 258
+        },
+        {
+          "entity_type": "LOCATION",
+          "text": "Mumbai",
+          "start": 645,
+          "end": 651
+        },
+        {
+          "entity_type": "LOCATION",
+          "text": "Mumbai",
+          "start": 992,
+          "end": 998
+        },
+        {
+          "entity_type": "LOCATION",
+          "text": "Pune",
+          "start": 1065,
+          "end": 1069
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies, Maharashtra",
+          "start": 213,
+          "end": 248
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies, Maharashtra",
+          "start": 953,
+          "end": 988
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies, Maharashtra",
+          "start": 1026,
+          "end": 1061
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies Maharashtra",
+          "start": 607,
+          "end": 641
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies",
+          "start": 213,
+          "end": 235
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies",
+          "start": 607,
+          "end": 629
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies",
+          "start": 953,
+          "end": 975
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies",
+          "start": 1026,
+          "end": 1048
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies",
+          "start": 1615,
+          "end": 1637
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "Registrar of Companies, Central Processing Centre",
+          "start": 1615,
+          "end": 1664
+        },
+        {
+          "entity_type": "COMPANY",
+          "text": "RoC",
+          "start": 1251,
+          "end": 1254
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=28",
+      "text": "Contact Person: Sarthak Malvadkar, Company Secretary and Compliance Officer; Telephone: + 91 20 4505 3237;",
+      "entities": [
+        {
+          "entity_type": "PERSON",
+          "text": "Sarthak Malvadkar",
+          "start": 16,
+          "end": 33
+        },
+        {
+          "entity_type": "PHONE",
+          "text": "+ 91 20 4505 3237",
+          "start": 88,
+          "end": 105
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=29",
+      "text": "E-mail: cs.connect@kshinternational.com; Website: www.kshinternational.com",
+      "entities": [
+        {
+          "entity_type": "EMAIL",
+          "text": "cs.connect@kshinternational.com",
+          "start": 8,
+          "end": 39
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=47",
+      "text": "This Red Herring Prospectus uses certain definitions and abbreviations which, unless the context otherwise indicates or implies, or unless otherwise specified, shall have the meaning as provided below, and references to any legislation, act, regulation, rules, guidelines or policies shall be to such legislation, act, regulation, rule guidelines or policy as amended from time to time and any reference to a statutory provision shall include any subordinate legislation made from time to time under that provision. Further, the Offer related terms used but not defined in this Red Herring Prospectus shall have the meaning ascribed to such terms under the General Information Document. In case of any inconsistency between the definitions given below and the definitions contained in the General Information Document (as defined below), the definitions given below shall prevail.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=744",
+      "text": "Telephone: + 91 20 45053237",
+      "entities": [
+        {
+          "entity_type": "PHONE",
+          "text": "+ 91 20 45053237",
+          "start": 11,
+          "end": 27
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=745",
+      "text": "E-mail: Sarthak.malvadkar@kshinterantional.com",
+      "entities": [
+        {
+          "entity_type": "EMAIL",
+          "text": "Sarthak.malvadkar@kshinterantional.com",
+          "start": 8,
+          "end": 46
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=756",
+      "text": "Telephone: +91 22 40094400 Email: ksh.ipo@nuvama.com Website: www.nuvama.com",
+      "entities": [
+        {
+          "entity_type": "PHONE",
+          "text": "+91 22 40094400",
+          "start": 11,
+          "end": 26
+        },
+        {
+          "entity_type": "EMAIL",
+          "text": "ksh.ipo@nuvama.com",
+          "start": 34,
+          "end": 52
+        }
+      ]
+    },
+    {
+      "container_path": "table / table=0 / row=1 / cell=0 / paragraph=0",
+      "text": "11/3, 11/4 and 11/5 Village Birdewadi Chakan Taluka - Khed Pune – 410 501",
+      "entities": [
+        {
+          "entity_type": "LOCATION",
+          "text": "Pune",
+          "start": 59,
+          "end": 63
+        }
+      ]
+    },
+    {
+      "container_path": "table / table=0 / row=1 / cell=0 / paragraph=1",
+      "text": "Maharashtra, India",
+      "entities": [
+        {
+          "entity_type": "LOCATION",
+          "text": "Maharashtra",
+          "start": 0,
+          "end": 11
+        },
+        {
+          "entity_type": "LOCATION",
+          "text": "India",
+          "start": 13,
+          "end": 18
+        }
+      ]
+    },
+    {
+      "container_path": "table / table=0 / row=1 / cell=2 / paragraph=1",
+      "text": "Sarthak Malvadkar Company Secretary and Compliance Officer",
+      "entities": [
+        {
+          "entity_type": "PERSON",
+          "text": "Sarthak Malvadkar",
+          "start": 0,
+          "end": 17
+        }
+      ]
+    },
+    {
+      "container_path": "body / paragraph=79",
+      "text": "Conventional and General Terms and Abbreviations",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=87",
+      "text": "Technical and Industry Related Terms",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=93",
+      "text": "Key Financial and Operating Metrics used in this Red Herring Prospectus",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=97",
+      "text": "CERTAIN CONVENTIONS, USE OF FINANCIAL INFORMATION AND MARKET DATA AND CURRENCY OF PRESENTATION",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=100",
+      "text": "Unless indicated otherwise, all references to page numbers in this Red Herring Prospectus are to page numbers of this Red Herring Prospectus.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=119",
+      "text": "Currency and Units of Presentation",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=121",
+      "text": "“Rupees” or “INR” or “₹” or “Rs.” are to Indian Rupees, the official currency of the Republic of India;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=122",
+      "text": "“U.S $”, “U.S. Dollar”, “USD” are to United States Dollars, the official currency of the United States of America;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=123",
+      "text": "‘EUR’, ‘Euro’ and ‘€’ are to the official currency of the European Union; and",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=124",
+      "text": "“SEK” are to Swedish Krona, the official currency of Sweden.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=127",
+      "text": "All references to time in this Red Herring Prospectus are to Indian Standard Time.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=133",
+      "text": "Source: FBIL Reference Rate as available on www.fbil.org.in. and www.oanda.com/bvi-en/ Notes:",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=134",
+      "text": "The exchange rates are rounded off to two decimal places.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=135",
+      "text": "In the event that any of the aforementioned date is a public holiday, the previous calendar day not being a public holiday has been considered.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=140",
+      "text": "Certain important factors that could cause actual results to differ materially from our expectations include, but are not lim ited to, the following:",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=143",
+      "text": "Price and availability of primary raw materials i.e. copper and aluminium, and insulating materials such as enamel and paper;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=144",
+      "text": "Reliance on the power sector (generation, transmission and distribution) industry;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=145",
+      "text": "Reliance on the sale of our key product segment i.e., specialized magnet winding wires;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=147",
+      "text": "Any unscheduled, unplanned or prolonged disruption, slowdown or shutdown of our manufacturing facilities;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=148",
+      "text": "Any delays or cost overruns in the completion of the construction of the Supa Facility;",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=150",
+      "text": "Reliance on exports and any change in law, regulations and policies of foreign jurisdictions where we sell our products or plan to sell our products.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=157",
+      "text": "Primary business of our Company",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=159",
+      "text": "For further details, see “Our Business” on page 211.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=161",
+      "text": "Summary of industry in which our Company operates",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=163",
+      "text": "For further details, see “Industry Overview” on page 137.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=167",
+      "text": "For further details, see “Our Promoters and Promoter Group” on page 269.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=169",
+      "text": "The following table summarizes the details of the Offer:",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=176",
+      "text": "The Net Proceeds are proposed to be utilised towards the following Objects:",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=181",
+      "text": "For further information, see “Objects of the Offer” on page 106.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=182",
+      "text": "Aggregate pre-Offer and post-Offer shareholding of our Promoters, the members of our Promoter Group, the Promoter Selling Shareholders of our Company",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=186",
+      "text": "*Also, the Promoter Selling Shareholder.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=187",
+      "text": "**The number is negligible and below the rounding off norms adopted by our Company.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=188",
+      "text": "^Subject to completion of the Offer and finalisation of the Basis of Allotment.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=190",
+      "text": "For further details, see “Capital Structure” on page 84.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=191",
+      "text": "Aggregate pre-Offer and post-Offer shareholding of our Promoters, members of our Promoter Group and the additional top 10 Shareholders of our Company",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=197",
+      "text": "^Subject to completion of the Offer and finalisation of the Basis of Allotment.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=198",
+      "text": "** The number is negligible and below the rounding off norms adopted by our Company.",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=199",
+      "text": "*Also, the Promoter Selling Shareholder",
+      "entities": []
+    },
+    {
+      "container_path": "body / paragraph=201",
+      "text": "For further details, see “Capital Structure” on page 84.",
+      "entities": []
+    }
+  ]
+}
